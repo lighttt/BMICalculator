@@ -1,4 +1,4 @@
-# bmi_calculator
+# Skeleton Code for BMI Calculator
 
 A new Flutter application.
 
