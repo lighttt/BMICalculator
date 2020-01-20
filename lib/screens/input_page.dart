@@ -1,13 +1,16 @@
+import 'package:bmi_calculator/components/bottom_button.dart';
 import 'package:bmi_calculator/constants.dart';
-import 'package:bmi_calculator/results_page.dart';
+import 'results_page.dart';
 import 'package:flutter/material.dart';
-import 'reusable_card.dart';
-import 'icon_content.dart';
+import '../components/reusable_card.dart';
+import '../components/icon_content.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const Color inActiveCardColor = Color(0xFF111328);
 const Color activeCardColor = Color(0xFF1D1E33);
 const Color bottomContainerColor = Color(0xFFEB1555);
+
+enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
   @override
@@ -15,28 +18,28 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleColor = inActiveCardColor;
-  Color femaleColor = inActiveCardColor;
-
-  // 1 = male, 2 = female
-  void updateColor(int genderType) {
-    if (genderType == 1) {
-      if (maleColor == inActiveCardColor) {
-        maleColor = activeCardColor;
-        femaleColor = inActiveCardColor;
-      } else {
-        maleColor = inActiveCardColor;
-      }
-    } else {
-      if (femaleColor == inActiveCardColor) {
-        femaleColor = activeCardColor;
-        maleColor = inActiveCardColor;
-      } else {
-        femaleColor = inActiveCardColor;
-      }
-    }
-  }
-
+//  Color maleColor = inActiveCardColor;
+//  Color femaleColor = inActiveCardColor;
+//
+//  // 1 = male, 2 = female
+//  void updateColor(int genderType) {
+//    if (genderType == 1) {
+//      if (maleColor == inActiveCardColor) {
+//        maleColor = activeCardColor;
+//        femaleColor = inActiveCardColor;
+//      } else {
+//        maleColor = inActiveCardColor;
+//      }
+//    } else {
+//      if (femaleColor == inActiveCardColor) {
+//        femaleColor = activeCardColor;
+//        maleColor = inActiveCardColor;
+//      } else {
+//        femaleColor = inActiveCardColor;
+//      }
+//    }
+//  }
+  Gender selectedGender;
   int height = 180;
   int weight = 60;
   int age = 19;
@@ -58,11 +61,13 @@ class _InputPageState extends State<InputPage> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          updateColor(1);
+                          selectedGender = Gender.male;
                         });
                       },
                       child: ReusableCard(
-                        colour: maleColor,
+                        colour: selectedGender == Gender.male
+                            ? activeCardColor
+                            : inActiveCardColor,
                         iconContent: IconContent(
                           icon: FontAwesomeIcons.mars,
                           gender: "MALE",
@@ -74,11 +79,13 @@ class _InputPageState extends State<InputPage> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          updateColor(2);
+                          selectedGender = Gender.female;
                         });
                       },
                       child: ReusableCard(
-                          colour: femaleColor,
+                          colour: selectedGender == Gender.female
+                              ? activeCardColor
+                              : inActiveCardColor,
                           iconContent: IconContent(
                             icon: FontAwesomeIcons.venus,
                             gender: "FEMALE",
@@ -251,29 +258,12 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            GestureDetector(
+            BottomButton(
+              title: "CALCUATE YOUR BMI",
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ResultsPage()));
               },
-              child: Container(
-                padding: EdgeInsets.only(bottom: 15.0),
-                color: Color(0xFFEB1555),
-                height: 80.0,
-                width: double.infinity,
-                margin: EdgeInsets.only(top: 15.0),
-                child: Center(
-                  child: Text(
-                    'CALCULATE YOUR BMI',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
             )
           ],
         ));
